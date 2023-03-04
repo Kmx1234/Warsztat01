@@ -48,7 +48,6 @@ public class TaskManager {
             System.out.println(option);
         }
     }
-
     public static String[][] wczytajDane(String fileName) {
         Path plik = Paths.get(fileName);
         if (!Files.exists(plik)) {
@@ -70,17 +69,6 @@ public class TaskManager {
         }
         return tab;
     }
-
-    public static void tablica(String[][] tab) {
-        for (int i = 0; i < tab.length; i++) {
-            System.out.print(i + " : ");
-            for (int j = 0; j < tab[i].length; j++) {
-                System.out.print(tab[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
     private static void dodajZadania() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Podaj opis zadania");
@@ -96,7 +84,24 @@ public class TaskManager {
         zadania[zadania.length - 1][1] = dueDate;
         zadania[zadania.length - 1][2] = isImportant;
     }
-
+    private static void usuńZadanie(String[][] tab, int index) {
+        try {
+            if (index < tab.length) {
+                zadania = ArrayUtils.remove(tab, index);
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("Element nie istnieje w tablicy");
+        }
+    }
+    public static void tablica(String[][] tab) {
+        for (int i = 0; i < tab.length; i++) {
+            System.out.print(i + " : ");
+            for (int j = 0; j < tab[i].length; j++) {
+                System.out.print(tab[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
     public static boolean liczba(String input) {
 
         if (NumberUtils.isParsable(input)) {
@@ -117,24 +122,16 @@ public class TaskManager {
         return Integer.parseInt(n);
     }
 
-    private static void usuńZadanie(String[][] tab, int index) {
-        try {
-            if (index < tab.length) {
-                zadania = ArrayUtils.remove(tab, index);
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            System.out.println("Element nie istnieje w tablicy");
-        }
-    }
+
 
     public static void zapiszDoPliku(String fileName, String[][] tab) {
-        Path dir = Paths.get(fileName);
+        Path plik = Paths.get(fileName);
         String[] lines = new String[zadania.length];
         for (int i = 0; i < tab.length; i++) {
             lines[i] = String.join(",", tab[i]);
         }
         try {
-            Files.write(dir, Arrays.asList(lines));
+            Files.write(plik, Arrays.asList(lines));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
