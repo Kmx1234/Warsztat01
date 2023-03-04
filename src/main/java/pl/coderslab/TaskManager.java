@@ -134,6 +134,8 @@ public class TaskManager {
             Files.write(plik, Arrays.asList(lines));
         } catch (IOException ex) {
             ex.printStackTrace();
+        }catch (NullPointerException e){
+            System.out.println();
         }
     }
 }
